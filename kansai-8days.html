@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关西八天行程</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f7f4ef;
+    --warm: #f0ebe2;
+    --red: #c0392b;
+    --red-light: #e8d5d3;
+    --gold: #b5914a;
+    --gold-light: #e8ddc8;
+    --muted: #4a4540;
+    --border: #d4cec4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Noto Sans SC', sans-serif; font-weight: 300; line-height: 1.8; min-height: 100vh; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  header { background: var(--ink); color: var(--paper); padding: 60px 24px 48px; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 50%, rgba(192,57,43,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(181,145,74,0.1) 0%, transparent 60%); }
+  .header-jp { font-family: 'Shippori Mincho', serif; font-size: 13.5px; letter-spacing: 6px; color: var(--gold); margin-bottom: 16px; position: relative; }
+  header h1 { font-family: 'Noto Serif SC', serif; font-weight: 300; font-size: clamp(28px, 6vw, 48px); letter-spacing: 8px; line-height: 1.3; position: relative; margin-bottom: 12px; }
+  .header-sub { font-size: 12.5px; letter-spacing: 4px; color: rgba(247,244,239,0.5); position: relative; }
+  .header-rule { width: 40px; height: 1px; background: var(--gold); margin: 20px auto; position: relative; }
+  nav { background: var(--warm); border-bottom: 1px solid var(--border); padding: 0 16px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: sticky; top: 0; z-index: 100; text-align: center; }
+  nav::-webkit-scrollbar { display: none; }
+  nav a { display: inline-block; padding: 14px 16px; font-size: 12.5px; letter-spacing: 2px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--red); }
+  main { max-width: 720px; margin: 0 auto; padding: 0 20px 80px; }
+  .section-intro { padding: 48px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .section-intro h2 { font-family: 'Noto Serif SC', serif; font-weight: 300; font-size: 22.5px; letter-spacing: 6px; margin-bottom: 12px; }
+  .section-intro p { font-size: 13.5px; color: var(--muted); letter-spacing: 1px; }
+  .day-card { margin-bottom: 56px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .day-card.visible { opacity: 1; transform: translateY(0); }
+  .day-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .day-number { font-family: 'Shippori Mincho', serif; font-size: 36.5px; font-weight: 400; color: var(--red); line-height: 1; flex-shrink: 0; }
+  .day-title { font-family: 'Noto Serif SC', serif; font-weight: 400; font-size: 16.5px; letter-spacing: 3px; line-height: 1.4; }
+  .day-subtitle { font-size: 11.5px; letter-spacing: 2px; color: var(--muted); margin-top: 4px; }
+  .time-block { display: flex; gap: 20px; padding: 8px 16px; margin-bottom: 4px; }
+  .time-label { font-size: 10.5px; letter-spacing: 1px; color: var(--gold); white-space: nowrap; padding-top: 3px; min-width: 88px; flex-shrink: 0; font-family: 'Shippori Mincho', serif; }
+  .time-title { font-size: 14.5px; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 4px; color: var(--ink); }
+  .time-detail { font-size: 12.5px; color: var(--muted); line-height: 1.7; letter-spacing: 0.5px; }
+  .highlight { background: var(--gold-light); border-left: 2px solid var(--gold); padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+  .highlight .time-title { color: #7a5c1e; }
+  .highlight .time-detail { color: #9a7a3e; }
+  .food { background: #f1ebe0; border-radius: 4px; }
+  .food .time-title { color: var(--ink); }
+  .food .time-detail { color: var(--muted); }
+  .shopping { background: #ede8e0; border-radius: 4px; }
+  .shopping .time-title { color: var(--ink); }
+  .shopping .time-detail { color: var(--muted); }
+  .activity { background: #ede3d5; border-radius: 4px; }
+  .activity .time-title { color: var(--ink); }
+  .activity .time-detail { color: var(--muted); }
+  .note { background: var(--warm); border-left: 2px solid var(--border); padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 12.5px; color: var(--muted); letter-spacing: 0.5px; }
+  .warn { background: #fdf3f2; border-left: 2px solid var(--red); padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; font-size: 12.5px; color: #7a2e24; letter-spacing: 0.5px; }
+  .transport { background: var(--warm); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 16px 0 24px; }
+  .transport-header { background: var(--ink); color: var(--paper); font-size: 10.5px; letter-spacing: 3px; padding: 8px 16px; font-family: 'Shippori Mincho', serif; }
+  .transport-row { display: grid; grid-template-columns: 200px 1fr auto; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--border); align-items: center; }
+  .transport-row:last-child { border-bottom: none; }
+  .transport-from { font-size: 12.5px; letter-spacing: 0.5px; white-space: nowrap; }
+  .transport-via { font-size: 11.5px; color: var(--muted); text-align: left; }
+  .transport-time { font-family: 'Shippori Mincho', serif; font-size: 12.5px; color: var(--red); text-align: right; white-space: nowrap; }
+  .transport-arrow { font-size: 10.5px; color: var(--muted); margin: 0 4px; }
+  .alt-block { border: 1px dashed var(--border); border-radius: 4px; padding: 16px; margin: 12px 0; }
+  .alt-label { font-size: 10.5px; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; font-family: 'Shippori Mincho', serif; }
+  .alt-label.on { color: var(--gold); }
+
+  .meal-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 24px 0; }
+  .meal-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; font-size: 12.5px; display: table; }
+  .meal-table thead { background: var(--ink); color: var(--paper); }
+  .meal-table thead th { padding: 8px 12px; text-align: left; font-family: 'Shippori Mincho', serif; font-weight: 400; letter-spacing: 2px; font-size: 10.5px; }
+  .meal-table tbody tr { border-bottom: 1px solid var(--border); }
+  .meal-table tbody tr:last-child { border-bottom: none; }
+  .meal-table tbody tr:nth-child(even) { background: var(--warm); }
+  .meal-table td { padding: 10px 12px; vertical-align: top; line-height: 1.6; }
+  .meal-table td:first-child { font-family: 'Shippori Mincho', serif; color: var(--red); font-size: 13.5px; white-space: nowrap; }
+  .meal-table td:nth-child(2) { font-weight: 500; font-size: 12.5px; white-space: nowrap; min-width: 52px; }
+
+  .summary-section { margin-top: 64px; padding-top: 40px; border-top: 2px solid var(--ink); }
+  .summary-section h2 { font-family: 'Noto Serif SC', serif; font-weight: 300; font-size: 20.5px; letter-spacing: 6px; margin-bottom: 32px; }
+  .summary-grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 48px; }
+  .summary-row { display: grid; grid-template-columns: 80px 1fr; background: var(--paper); }
+  .summary-day { background: var(--ink); color: var(--paper); font-family: 'Shippori Mincho', serif; font-size: 18.5px; display: flex; align-items: center; justify-content: center; padding: 20px 8px; }
+  .summary-content { padding: 16px 20px; }
+  .summary-title { font-size: 13.5px; font-weight: 500; letter-spacing: 2px; margin-bottom: 8px; }
+  .summary-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { font-size: 11.5px; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+  .pill-early { background: #fdf3f2; color: var(--red); border: 1px solid var(--red-light); }
+  .pill-am { background: var(--gold-light); color: #7a5c1e; border: 1px solid #d4b87a; }
+  .pill-pm { background: var(--warm); color: var(--ink); border: 1px solid var(--border); }
+  .pill-food { background: #f8f4f0; color: #7a5020; border: 1px solid #d4a87a; }
+
+  .checklist { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 48px; }
+  .checklist-header { background: var(--ink); color: var(--paper); font-size: 10.5px; letter-spacing: 3px; padding: 10px 16px; font-family: 'Shippori Mincho', serif; }
+  .checklist-item { display: flex; align-items: flex-start; gap: 16px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box { width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; margin-top: 2px; }
+  .check-task { font-size: 13.5px; font-weight: 500; letter-spacing: 0.5px; }
+  .check-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; letter-spacing: 0.5px; }
+  .check-urgent { font-size: 10.5px; letter-spacing: 1px; color: var(--red); font-family: 'Shippori Mincho', serif; flex-shrink: 0; padding-top: 4px; margin-left: auto; padding-left: 8px; }
+  footer { text-align: center; padding: 40px 20px; background: var(--ink); color: rgba(247,244,239,0.4); font-size: 11.5px; letter-spacing: 3px; font-family: 'Shippori Mincho', serif; }
+  @media (max-width: 480px) {
+    .transport-row { grid-template-columns: 120px 1fr auto; }
+    .summary-row { grid-template-columns: 48px 1fr; }
+    .summary-day { font-size: 14.5px; }
+    .meal-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .meal-table td { white-space: nowrap; }
+    .meal-table td:nth-child(3) { white-space: normal; min-width: 140px; }
+    .transport { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .time-label { min-width: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-jp">KANSAI · 八日间</div>
+  <div class="header-rule"></div>
+  <h1>关西八天行程</h1>
+  <div class="header-rule"></div>
+  <div class="header-sub">京都 · 奈良 · 大阪</div>
+</header>
+
+<nav>
+  <a href="#day1">Day 1</a>
+  <a href="#day2">Day 2</a>
+  <a href="#day3">Day 3</a>
+  <a href="#day4">Day 4</a>
+  <a href="#day5">Day 5</a>
+  <a href="#day6">Day 6</a>
+  <a href="#day7">Day 7</a>
+  <a href="#day8">Day 8</a>
+  <a href="#meals">饮食</a>
+  <a href="#transport">交通</a>
+  <a href="#summary">动线</a>
+  <a href="#checklist">预定</a>
+</nav>
+
+<main>
+  <div class="section-intro">
+    <h2>行 程 概 览</h2>
+    <p>关西机场进出 · 京都五晚 · 奈良一晚 · 大阪一晚</p>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-card" id="day1">
+    <div class="day-header">
+      <div class="day-number">01</div>
+      <div class="day-title-wrap">
+        <div class="day-title">上海 → 大阪关西机场 → 京都</div>
+        <div class="day-subtitle">落地转车进京都 · 鸭川散步 · 祇园晚饭</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">上海浦东 <span class="transport-arrow">→</span> 大阪关西机场</div>
+        <div class="transport-via">国际航班</div>
+        <div class="transport-time">约 3h</div>
+      </div>
+      <div class="transport-row">
+        <div class="transport-from">关西机场 <span class="transport-arrow">→</span> 京都站</div>
+        <div class="transport-via">JR Haruka特急 或 利木津巴士</div>
+        <div class="transport-time">约 75–80分钟</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">下午</div>
+      <div class="time-content">
+        <div class="time-title">京都酒店 Check in</div>
+        <div class="time-detail">放下行李，休整</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">傍晚</div>
+      <div class="time-content">
+        <div class="time-title">鸭川散步 · 四条河原町</div>
+        <div class="time-detail">沿河边走走，感受京都的傍晚气氛</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">祇园吃晚饭</div>
+        <div class="time-detail">木屋町、先斗町一带随意找，早点休息，明天早起</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-card" id="day2">
+    <div class="day-header">
+      <div class="day-number">02</div>
+      <div class="day-title-wrap">
+        <div class="day-title">京都 · 清水寺线</div>
+        <div class="day-subtitle">二年坂三年坂晨拍 · 清水寺 · 永観堂 · 吉祥菓寮 · 祇园手信 · 八坂神社夜景</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">5:30</div>
+      <div class="time-content">
+        <div class="time-title">📷 二年坂 · 三年坂 · 八坂通 清晨街拍</div>
+        <div class="time-detail">白天人潮拥挤无法好好拍照，清晨是唯一的窗口，石板路空无一人</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">6:00</div>
+      <div class="time-content">
+        <div class="time-title">⛩ 清水寺</div>
+        <div class="time-detail">准点开门进入，本堂、清水的舞台、音羽の瀧、奥之院都可走，6点几乎没人。御守、御朱印授与所要等到8点才开</div>
+      </div>
+    </div>
+    <div class="alt-block">
+      <div class="alt-label on">✦ 清水寺下山一路往北走，可挑选去</div>
+      <div class="time-title" style="font-size:13px;margin-bottom:4px">高台寺 · 知恩院 · 青蓮院 · 無鄰菴 · 天授庵 · 南禅寺</div>
+      <div class="time-detail" style="font-size:12px;color:var(--muted)">沿东山山脚步行，南禅寺一带，水路阁、庭院都值得停一停，按当天体力和时间挑选</div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">11:00</div>
+      <div class="time-content">
+        <div class="time-title">永観堂禅林寺</div>
+        <div class="time-detail">步行范围内，庭园清净，与南禅寺挨着</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">12:00</div>
+      <div class="time-content">
+        <div class="time-title">平安神宮</div>
+        <div class="time-detail">永観堂再往北一点，朱红色大鸟居</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">途中</div>
+      <div class="time-content">
+        <div class="time-title">午饭</div>
+        <div class="time-detail">沿途随意找一家，吃完回酒店休整</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">下午</div>
+      <div class="time-content">
+        <div class="time-title">回酒店休息</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">16:00</div>
+      <div class="time-content">
+        <div class="time-title">🍡 吉祥菓寮 · 宇治抹茶芭菲</div>
+        <div class="time-detail">东山石桥町，招牌芭菲加手作わらび餅、丹波黑豆、白玉</div>
+      </div>
+    </div>
+    <div class="shopping time-block">
+      <div class="time-label">傍晚</div>
+      <div class="time-content">
+        <div class="time-title">祇园手信</div>
+        <div class="time-detail">祇園辻利、伊藤久右衛門、SOU・SOU 等，祇园四条一带步行可达</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">祇园吃晚饭</div>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card" id="day3">
+    <div class="day-header">
+      <div class="day-number">03</div>
+      <div class="day-title-wrap">
+        <div class="day-title">京都 · 大原 + 修学院 + 下鸭神社</div>
+        <div class="day-subtitle">三千院 · 寂光院 · 下鸭神社 · 近江牛和牛晚餐</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">京都站 <span class="transport-arrow">→</span> 大原</div>
+        <div class="transport-via">京都巴士17号系统（C3乘车处）</div>
+        <div class="transport-time">约 60–70分</div>
+      </div>
+      <div class="transport-row">
+        <div class="transport-from">大原 <span class="transport-arrow">→</span> 修学院駅前</div>
+        <div class="transport-via">京都巴士17号系统（同线折返）</div>
+        <div class="transport-time">约 20分</div>
+      </div>
+    </div>
+    <div class="note">17号巴士经修学院駅前，去大原和回程都能在此上下车，沿途顺路逛圆光寺、诗仙堂，不绕路。早班车约7:36发，到大原约8:38。</div>
+    <div class="time-block highlight">
+      <div class="time-label">9:00</div>
+      <div class="time-content">
+        <div class="time-title">三千院 · 寂光院</div>
+        <div class="time-detail">大原是山间小村庄，游客很少，慢慢逛庭院和苔藓林</div>
+      </div>
+    </div>
+    <div class="alt-block">
+      <div class="alt-label on">✦ 回程路上可挑选去</div>
+      <div class="time-title" style="font-size:13px;margin-bottom:4px">圆光寺 · 诗仙堂丈山寺 · 松ヶ﨑橋 · 高野川堤岸</div>
+      <div class="time-detail" style="font-size:12px;color:var(--muted)">在修学院駅前下车，步行可达，清净小众，高野川堤岸向南漫步可远眺比叡山，按当天体力和时间挑选</div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">途中</div>
+      <div class="time-content">
+        <div class="time-title">午饭</div>
+        <div class="time-detail">大原或修学院一带随意找</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">13:00</div>
+      <div class="time-content">
+        <div class="time-title">下鸭神社</div>
+        <div class="time-detail">糺之森参道，幽静绿意，从修学院方向往南顺路</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">下午</div>
+      <div class="time-content">
+        <div class="time-title">回酒店休息</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">17:00</div>
+      <div class="time-content">
+        <div class="time-title">ぎをん小森 · 抹茶わらび饼</div>
+        <div class="time-detail">白川边町家，祇园步行范围</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">🥩 近江牛和牛铁板烧（预约）</div>
+        <div class="time-detail">祇园一带专门店，提前1–2周预约</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-card" id="day4">
+    <div class="day-header">
+      <div class="day-number">04</div>
+      <div class="day-title-wrap">
+        <div class="day-title">京都 · 贵船 + 仙洞御所</div>
+        <div class="day-subtitle">贵船神社 · 川床午饭 · 京都御苑 · 仙洞御所 · 祇园晚饭</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">出町柳駅 <span class="transport-arrow">→</span> 貴船口駅</div>
+        <div class="transport-via">叡山电铁鞍马线</div>
+        <div class="transport-time">约 30分</div>
+      </div>
+      <div class="transport-row">
+        <div class="transport-from">貴船口駅 <span class="transport-arrow">→</span> 贵船神社</div>
+        <div class="transport-via">京都巴士33号系统 或 步行约25分</div>
+        <div class="transport-time">约 5–25分</div>
+      </div>
+      <div class="transport-row">
+        <div class="transport-from">出町柳駅 <span class="transport-arrow">→</span> 京都御苑</div>
+        <div class="transport-via">步行</div>
+        <div class="transport-time">约 5分</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">9:00</div>
+      <div class="time-content">
+        <div class="time-title">贵船神社</div>
+        <div class="time-detail">参道石灯笼林立，山间清净，气温比市区低不少</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">午饭</div>
+      <div class="time-content">
+        <div class="time-title">🍜 川床料理</div>
+        <div class="time-detail">溪水上方的座席用餐，初夏限定（约5–9月），降暑解热，气氛特别</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">14:00</div>
+      <div class="time-content">
+        <div class="time-title">京都御苑 · 仙洞御所</div>
+        <div class="time-detail">京都御苑免费开放，随时可进；仙洞御所属宫内厅管理</div>
+      </div>
+    </div>
+    <div class="warn">⚠ 仙洞御所需提前在宫内厅官网申请参观（通常提前1–3个月开放预约），或当天去现场领取限量"当日整理券"（名额很少，通常只在上午一个时段）。出发前务必查好预约窗口，否则当天可能进不去。</div>
+    <div class="time-block">
+      <div class="time-label">傍晚</div>
+      <div class="time-content">
+        <div class="time-title">回酒店休息</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">祇园吃晚饭</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">晚上</div>
+      <div class="time-content">
+        <div class="time-title">八坂神社夜景 · 祇园花街漫步</div>
+        <div class="time-detail">灯笼亮起后的八坂神社，花见小路、白川一带散步</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day-card" id="day5">
+    <div class="day-header">
+      <div class="day-number">05</div>
+      <div class="day-title-wrap">
+        <div class="day-title">京都 · 高雄三尾 + 岚山</div>
+        <div class="day-subtitle">神護寺 · 东海自然步道 · 岚山选逛</div>
+      </div>
+    </div>
+    <div class="warn">⚠ 这天的核心是一段山林徒步，高雄到清滝的东海自然步道单程约2–3小时，按当天体力提前决定要不要走完到岚山，在岚山挑选几个景点去。</div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">京都站 <span class="transport-arrow">→</span> 高雄</div>
+        <div class="transport-via">西日本JR巴士 高雄京北线</div>
+        <div class="transport-time">约 50分</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">10:00</div>
+      <div class="time-content">
+        <div class="time-title">东海自然步道 → 清滝</div>
+        <div class="time-detail">从神護寺入口开始，沿溪谷山林步道下山，几乎没有团客，秋天紅叶尤其好，初夏则是满眼新绿</div>
+      </div>
+    </div>
+    <div class="alt-block">
+      <div class="alt-label on">✦ 可挑选去</div>
+      <div class="time-title" style="font-size:13px;margin-bottom:4px">神護寺 · 西明寺 · 高山寺</div>
+      <div class="time-detail" style="font-size:12px;color:var(--muted)">高雄三尾，三寺挨得很近，神護寺山门石阶有气势，体力够的话，可以从高山寺开始走东海自然步道</div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">途中</div>
+      <div class="time-content">
+        <div class="time-title">午饭</div>
+        <div class="time-detail">高雄或清滝一带，或路上随便找一家</div>
+      </div>
+    </div>
+    <div class="alt-block">
+      <div class="alt-label on">✦ 到岚山后可挑选去</div>
+      <div class="time-title" style="font-size:13px;margin-bottom:4px">愛宕念仏寺 · 常寂光寺 · 天龍寺 · 祐斎亭 · 渡月橋 · 西芳寺</div>
+      <div class="time-detail" style="font-size:12px;color:var(--muted)">从清滝步行至岚山范围，按当天体力和时间选择</div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">傍晚</div>
+      <div class="time-content">
+        <div class="time-title">回酒店休息</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">祇园吃晚饭</div>
+        <div class="time-detail">京都最后一晚，随意吃</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="day-card" id="day6">
+    <div class="day-header">
+      <div class="day-number">06</div>
+      <div class="day-title-wrap">
+        <div class="day-title">京都 → 宇治 → 奈良</div>
+        <div class="day-subtitle">伏见稻荷 · 平等院鳳凰堂 · 宇治上神社 · 中村藤吉 · 移动奈良</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">京都站 <span class="transport-arrow">→</span> 宇治站</div>
+        <div class="transport-via">JR奈良线</div>
+        <div class="transport-time">约 17分</div>
+      </div>
+      <div class="transport-row">
+        <div class="transport-from">宇治 <span class="transport-arrow">→</span> 近铁奈良站</div>
+        <div class="transport-via">JR奈良线转近铁，或近铁直达</div>
+        <div class="transport-time">约 40–50分</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">5:00</div>
+      <div class="time-content">
+        <div class="time-title">⛩ 伏见稻荷大社</div>
+        <div class="time-detail">境内24小时开放，千本鸟居晨光最美，人极少，过了千本鸟居继续往山上走，越往上越清净</div>
+      </div>
+    </div>
+    <div class="alt-block">
+      <div class="alt-label on">✦ 出来后可挑选去</div>
+      <div class="time-title" style="font-size:13px;margin-bottom:4px">東福寺</div>
+      <div class="time-detail" style="font-size:12px;color:var(--muted)">伏见稻荷步行可达</div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">10:00</div>
+      <div class="time-content">
+        <div class="time-title">回酒店休息 · 整理行李 · Check out</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">11:00</div>
+      <div class="time-content">
+        <div class="time-title">坐车去宇治</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">中午</div>
+      <div class="time-content">
+        <div class="time-title">午饭</div>
+        <div class="time-detail">宇治随意找一家</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">13:00</div>
+      <div class="time-content">
+        <div class="time-title">平等院鳳凰堂 · 宇治上神社</div>
+        <div class="time-detail">十円硬币上的鳳凰堂，开门直后人少；宇治上神社步行可达，安静</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">下午茶</div>
+      <div class="time-content">
+        <div class="time-title">中村藤吉本店</div>
+        <div class="time-detail">整理券制，人多时排队较久，可先取号再去逛平等院、宇治上神社等位</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">下午</div>
+      <div class="time-content">
+        <div class="time-title">坐车去奈良 · 酒店 Check in</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">傍晚</div>
+      <div class="time-content">
+        <div class="time-title">奈良町 · 老町屋散步</div>
+        <div class="time-detail">奈良街区散步，感受奈良的傍晚气氛 </div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">🍱 奈良釜饭</div>
+        <div class="time-detail">近铁奈良站附近，随便找一家日本传统釜饭</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="day-card" id="day7">
+    <div class="day-header">
+      <div class="day-number">07</div>
+      <div class="day-title-wrap">
+        <div class="day-title">奈良 → 大阪</div>
+        <div class="day-subtitle">东大寺 · 春日大社 · 看鹿 · 唐招提寺 · 神户和牛晚餐</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">近铁奈良站 <span class="transport-arrow">→</span> 大阪难波</div>
+        <div class="transport-via">近铁奈良线（直达）</div>
+        <div class="transport-time">约 40分</div>
+      </div>
+    </div>
+    <div class="time-block highlight">
+      <div class="time-label">8:00</div>
+      <div class="time-content">
+        <div class="time-title">🦌 东大寺 · 春日大社 · 奈良公园看鹿</div>
+        <div class="time-detail">东大寺一般8点开门（夏季略早），趁早人少，鹿也是清晨最活跃</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">中午</div>
+      <div class="time-content">
+        <div class="time-title">奈良釜饭</div>
+        <div class="time-detail">昨晚没吃够的话，可以再吃一次</div>
+      </div>
+    </div>
+    <div class="activity time-block">
+      <div class="time-label">13:00</div>
+      <div class="time-content">
+        <div class="time-title">唐招提寺</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">下午</div>
+      <div class="time-content">
+        <div class="time-title">移动大阪 · 酒店 Check in</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">晚餐</div>
+      <div class="time-content">
+        <div class="time-title">🥩 神户和牛铁板烧</div>
+        <div class="time-detail">大阪市区内的神户和牛专门店，建议提前预约</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 8 -->
+  <div class="day-card" id="day8">
+    <div class="day-header">
+      <div class="day-number">08</div>
+      <div class="day-title-wrap">
+        <div class="day-title">大阪 → 关西机场 → 上海</div>
+        <div class="day-subtitle">中崎町 · 空堀商店街购物 · 回上海</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="transport-header">交通安排</div>
+      <div class="transport-row">
+        <div class="transport-from">大阪市区 <span class="transport-arrow">→</span> 关西机场</div>
+        <div class="transport-via">南海电铁特急ラピート 或 JR特急はるか</div>
+        <div class="transport-time">约 40–50分</div>
+      </div>
+    </div>
+    <div class="shopping time-block">
+      <div class="time-label">上午</div>
+      <div class="time-content">
+        <div class="time-title">中崎町 · 空堀商店街</div>
+        <div class="time-detail">不去道顿堀人挤人，中崎町是复古咖啡馆街区，空堀商店街轻松买伴手礼</div>
+      </div>
+    </div>
+    <div class="food time-block">
+      <div class="time-label">午饭</div>
+      <div class="time-content">
+        <div class="time-title">大阪随意吃</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">下午</div>
+      <div class="time-content">
+        <div class="time-title">取行李 · 前往关西机场</div>
+        <div class="time-detail">留足2–3小时办理国际航班登机</div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-label">晚上</div>
+      <div class="time-content">
+        <div class="time-title">飞回上海</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEAL OVERVIEW -->
+  <div class="summary-section" id="meals">
+    <h2>全 程 饮 食 一 览</h2>
+    <div class="meal-table-wrap"><table class="meal-table">
+      <thead>
+        <tr><th>天</th><th>时段</th><th>食物</th><th>位置</th><th>注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1</td><td>晚餐</td><td>祇园随意</td><td>祇园/木屋町</td><td>抵达当晚，早些休息</td></tr>
+        <tr><td>Day 2</td><td>下午茶</td><td>吉祥菓寮抹茶芭菲</td><td>东山石桥町</td><td></td></tr>
+        <tr><td>Day 2</td><td>晚餐</td><td>祇园随意</td><td>祇园</td><td></td></tr>
+        <tr><td>Day 3</td><td>下午茶</td><td>ぎをん小森</td><td>祇园白川</td><td>抹茶わらび饼</td></tr>
+        <tr><td>Day 3</td><td>晚餐</td><td>近江牛和牛铁板烧</td><td>祇园附近</td><td>需预约，提前1–2周</td></tr>
+        <tr><td>Day 4</td><td>午饭</td><td>川床料理</td><td>贵船</td><td>初夏限定（约5–9月），建议提前预约</td></tr>
+        <tr><td>Day 4</td><td>晚餐</td><td>祇园随意</td><td>祇园</td><td></td></tr>
+        <tr><td>Day 5</td><td>午饭</td><td>高雄/清滝随意</td><td>高雄一带</td><td>看徒步进度灵活安排</td></tr>
+        <tr><td>Day 5</td><td>晚餐</td><td>祇园随意</td><td>祇园</td><td>京都最后一晚</td></tr>
+        <tr><td>Day 6</td><td>下午茶</td><td>中村藤吉本店</td><td>宇治</td><td>整理券制，建议先取号</td></tr>
+        <tr><td>Day 6</td><td>晚餐</td><td>奈良釜饭</td><td>近铁奈良站附近</td><td></td></tr>
+        <tr><td>Day 7</td><td>午饭</td><td>奈良釜饭</td><td>近铁奈良站附近</td><td></td></tr>
+        <tr><td>Day 7</td><td>晚餐</td><td>神户和牛铁板烧</td><td>大阪市区</td><td>建议预约</td></tr>
+        <tr><td>Day 8</td><td>午饭</td><td>大阪随意</td><td>大阪市区</td><td></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- TRANSPORT SUMMARY -->
+  <div class="summary-section" id="transport">
+    <h2>全 程 交 通 汇 总</h2>
+    <div class="transport">
+      <div class="transport-header">主要区间</div>
+      <div class="transport-row"><div class="transport-from">关西机场 <span class="transport-arrow">→</span> 京都站</div><div class="transport-via">JR Haruka 或利木津巴士</div><div class="transport-time">约 75–80分</div></div>
+      <div class="transport-row"><div class="transport-from">京都站 <span class="transport-arrow">→</span> 大原</div><div class="transport-via">京都巴士17号</div><div class="transport-time">约 60–70分</div></div>
+      <div class="transport-row"><div class="transport-from">出町柳 <span class="transport-arrow">→</span> 貴船口</div><div class="transport-via">叡山电铁鞍马线</div><div class="transport-time">约 30分</div></div>
+      <div class="transport-row"><div class="transport-from">京都站 <span class="transport-arrow">→</span> 高雄</div><div class="transport-via">西日本JR巴士</div><div class="transport-time">约 50分</div></div>
+      <div class="transport-row"><div class="transport-from">京都站 <span class="transport-arrow">→</span> 宇治</div><div class="transport-via">JR奈良线</div><div class="transport-time">约 17分</div></div>
+      <div class="transport-row"><div class="transport-from">宇治 <span class="transport-arrow">→</span> 近铁奈良</div><div class="transport-via">JR转近铁</div><div class="transport-time">约 40–50分</div></div>
+      <div class="transport-row"><div class="transport-from">近铁奈良 <span class="transport-arrow">→</span> 大阪难波</div><div class="transport-via">近铁奈良线直达</div><div class="transport-time">约 40分</div></div>
+      <div class="transport-row"><div class="transport-from">大阪市区 <span class="transport-arrow">→</span> 关西机场</div><div class="transport-via">南海ラピート 或 JR Haruka</div><div class="transport-time">约 40–50分</div></div>
+    </div>
+  </div>
+
+  <!-- ROUTE SUMMARY -->
+  <div class="summary-section" id="summary">
+    <h2>节 奏 动 线 总 结</h2>
+    <div class="summary-grid">
+      <div class="summary-row"><div class="summary-day">01</div><div class="summary-content">
+        <div class="summary-title">抵达京都 · 鸭川散步</div>
+        <div class="summary-pills"><span class="pill pill-am">关西机场→京都</span><span class="pill pill-pm">鸭川散步</span><span class="pill pill-food">祇园晚饭</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">02</div><div class="summary-content">
+        <div class="summary-title">清水寺 · 永観堂 · 祇园花街</div>
+        <div class="summary-pills"><span class="pill pill-early">二三年坂·清水寺</span><span class="pill pill-am">永観堂·南禅寺</span><span class="pill pill-food">吉祥菓寮</span><span class="pill pill-pm">祇园花街·手信</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">03</div><div class="summary-content">
+        <div class="summary-title">大原 · 修学院 · 下鸭神社</div>
+        <div class="summary-pills"><span class="pill pill-am">三千院·寂光院</span><span class="pill pill-am">圆光寺·诗仙堂</span><span class="pill pill-pm">下鸭神社</span><span class="pill pill-food">近江牛和牛</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">04</div><div class="summary-content">
+        <div class="summary-title">贵船 · 仙洞御所 · 八坂神社夜景</div>
+        <div class="summary-pills"><span class="pill pill-am">贵船神社</span><span class="pill pill-food">川床料理</span><span class="pill pill-pm">京都御苑·仙洞御所</span><span class="pill pill-pm">八坂神社夜景</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">05</div><div class="summary-content">
+        <div class="summary-title">高雄三尾 · 东海步道 · 岚山</div>
+        <div class="summary-pills"><span class="pill pill-am">神護寺</span><span class="pill pill-am">东海步道徒步</span><span class="pill pill-pm">岚山</span><span class="pill pill-food">祇园晚饭</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">06</div><div class="summary-content">
+        <div class="summary-title">伏见稻荷 · 宇治 · 移动奈良</div>
+        <div class="summary-pills"><span class="pill pill-early">伏见稻荷</span><span class="pill pill-am">平等院·宇治上神社</span><span class="pill pill-food">中村藤吉</span><span class="pill pill-food">奈良釜饭</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">07</div><div class="summary-content">
+        <div class="summary-title">奈良看鹿 · 移动大阪</div>
+        <div class="summary-pills"><span class="pill pill-early">东大寺·春日大社</span><span class="pill pill-am">唐招提寺</span><span class="pill pill-food">神户和牛晚餐</span></div>
+      </div></div>
+      <div class="summary-row"><div class="summary-day">08</div><div class="summary-content">
+        <div class="summary-title">大阪购物 · 回上海</div>
+        <div class="summary-pills"><span class="pill pill-am">中崎町·空堀商店街</span><span class="pill pill-pm">关西机场</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="checklist" id="checklist">
+    <div class="checklist-header">预订 · 预约 · 抢票</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">上海↔大阪机票</div><div class="check-note">无京都直飞，经关西机场进出，注意中日航线近期减班，越早订越好</div></div>
+      <div class="check-urgent">尽早</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">京都酒店预订（5晚）</div><div class="check-note">四条河原町或祇园一带，方便清晨出发</div></div>
+      <div class="check-urgent">尽早</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">奈良酒店预订（1晚）</div><div class="check-note">近铁奈良站附近，方便清晨进公园</div></div>
+      <div class="check-urgent">尽早</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">大阪酒店预订（1晚）</div><div class="check-note">市区为主，方便最后一天去关西机场</div></div>
+      <div class="check-urgent">尽早</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">仙洞御所参观申请</div><div class="check-note">宫内厅官网提前申请，或当天领取限量整理券（名额很少），Day 4安排前务必确认</div></div>
+      <div class="check-urgent">提前1–3个月</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">贵船川床料理预约</div><div class="check-note">初夏限定季节（约5–9月），热门店建议提前预约</div></div>
+      <div class="check-urgent">提前</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">近江牛和牛铁板烧预约</div><div class="check-note">Day 3晚餐，祇园附近专门店，提前1–2周</div></div>
+      <div class="check-urgent">提前</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <div><div class="check-task">神户和牛铁板烧预约</div><div class="check-note">Day 7晚餐，大阪市区专门店，提前1–2周</div></div>
+      <div class="check-urgent">提前</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>京都 · 奈良 · 大阪 · 八日间</footer>
+
+<script>
+  const cards = document.querySelectorAll('.day-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  cards.forEach(card => observer.observe(card));
+  document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
