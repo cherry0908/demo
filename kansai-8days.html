@@ -80,6 +80,14 @@
   .meal-table td:first-child { font-family: 'Shippori Mincho', serif; color: var(--red); font-size: 13.5px; white-space: nowrap; }
   .meal-table td:nth-child(2) { font-weight: 500; font-size: 12.5px; white-space: nowrap; min-width: 52px; }
 
+  #food-table { table-layout: fixed; }
+  #food-table th:nth-child(1), #food-table td:nth-child(1) { width: 6%; }
+  #food-table th:nth-child(2), #food-table td:nth-child(2) { width: 10%; }
+  #food-table th:nth-child(3), #food-table td:nth-child(3) { width: 15%; white-space: normal; }
+  #food-table th:nth-child(4), #food-table td:nth-child(4) { width: 30%; white-space: normal; }
+  #food-table th:nth-child(5), #food-table td:nth-child(5) { width: 16%; white-space: normal; }
+  #food-table th:nth-child(6), #food-table td:nth-child(6) { width: 23%; white-space: normal; }
+
   .summary-section { margin-top: 64px; padding-top: 40px; border-top: 2px solid var(--ink); }
   .summary-section h2 { font-family: 'Noto Serif SC', serif; font-weight: 300; font-size: 20.5px; letter-spacing: 6px; margin-bottom: 32px; }
   .summary-grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 48px; }
@@ -110,6 +118,9 @@
     .meal-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .meal-table td { white-space: nowrap; }
     .meal-table td:nth-child(3) { white-space: normal; min-width: 140px; }
+    #food-table { table-layout: auto; }
+    #food-table td:nth-child(3) { white-space: normal; min-width: 90px; }
+    #food-table td:nth-child(4) { white-space: normal; min-width: 160px; }
     .transport { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .time-label { min-width: 72px; }
   }
@@ -227,6 +238,12 @@
       <div class="time-title" style="font-size:14.5px;margin-bottom:4px">高台寺 · 知恩院 · 青蓮院 · 無鄰菴 · 天授庵 · 南禅寺</div>
       <div class="time-detail" style="font-size:12.5px;color:var(--muted)">沿东山山脚步行，南禅寺一带，水路阁、庭院都值得停一停，看时间挑选</div>
     </div>
+    <div class="food time-block">
+      <div class="time-label">途中</div>
+      <div class="time-content">
+        <div class="time-title">🍵 菊乃井 無碍山房</div>
+      </div>
+    </div>
     <div class="activity time-block">
       <div class="time-label">12:00</div>
       <div class="time-content">
@@ -250,7 +267,7 @@
     <div class="food time-block">
       <div class="time-label">16:00</div>
       <div class="time-content">
-        <div class="time-title">🍡 吉祥菓寮 · 宇治抹茶芭菲</div>
+        <div class="time-title">🍨 吉祥菓寮 · 宇治抹茶芭菲</div>
         <div class="time-detail">东山石桥町，招牌芭菲加手作わらび餅、丹波黑豆、白玉</div>
       </div>
     </div>
@@ -319,7 +336,7 @@
     <div class="food time-block">
       <div class="time-label">16:00</div>
       <div class="time-content">
-        <div class="time-title">ぎをん小森 · 抹茶わらび饼</div>
+        <div class="time-title">🍡 ぎをん小森 · 抹茶わらび饼</div>
         <div class="time-detail">白川边町家，祇园步行范围，京阪清水五条駅下车后过去</div>
       </div>
     </div>
@@ -375,7 +392,7 @@
     <div class="food time-block">
       <div class="time-label">13:00</div>
       <div class="time-content">
-        <div class="time-title">一保堂茶舗 京都本店</div>
+        <div class="time-title">🍵 一保堂茶舗 京都本店</div>
         <div class="time-detail">寺町通老字号，300年历史，喫茶室嘉木可坐下喝茶配点心，神宮丸太町駅3号出口步行约10分</div>
       </div>
     </div>
@@ -498,6 +515,12 @@
         <div class="time-title">京都酒店 Check out</div>
       </div>
     </div>
+    <div class="food time-block">
+      <div class="time-label">上午</div>
+      <div class="time-content">
+        <div class="time-title">🌰 和栗専門 紗織</div>
+      </div>
+    </div>
     <div class="time-block">
       <div class="time-label">11:00</div>
       <div class="time-content">
@@ -508,7 +531,7 @@
     <div class="food time-block">
       <div class="time-label">12:00</div>
       <div class="time-content">
-        <div class="time-title">中村藤吉 平等院店</div>
+        <div class="time-title">🍵 中村藤吉 平等院店</div>
         <div class="time-detail">本店要排队，平等院店是自助点单形式，不用等位</div>
       </div>
     </div>
@@ -694,33 +717,36 @@
   <!-- MEAL OVERVIEW -->
   <div class="summary-section" id="meals">
     <h2>全 程 饮 食 一 览</h2>
-    <div class="meal-table-wrap"><table class="meal-table">
+    <div class="meal-table-wrap"><table class="meal-table" id="food-table">
       <thead>
-        <tr><th>天</th><th>时段</th><th>食物</th><th>位置</th><th>注</th></tr>
+        <tr><th>天</th><th>时段</th><th>食物</th><th>店名</th><th>位置</th><th>注</th></tr>
       </thead>
       <tbody>
-        <tr><td>Day 1</td><td>晚饭</td><td>祇园随意</td><td>祇园</td><td></td></tr>
-        <tr><td>Day 2</td><td>午饭</td><td>南禅寺 順正</td><td>祇园</td><td></td></tr>
-        <tr><td>Day 2</td><td>下午茶</td><td>吉祥菓寮抹茶芭菲</td><td>东山石桥町</td><td></td></tr>
-        <tr><td>Day 2</td><td>晚饭</td><td>祇园随意</td><td>祇园</td><td></td></tr>
-        <tr><td>Day 3</td><td>午饭</td><td>修学院周边随意</td><td>修学院駅</td><td></td></tr>
-        <tr><td>Day 3</td><td>下午茶</td><td>ぎをん小森</td><td>祇园白川</td><td>抹茶わらび饼</td></tr>
-        <tr><td>Day 3</td><td>晚饭</td><td>锦市场随意</td><td>锦市场</td><td>市场内小店，边逛边吃</td></tr>
-        <tr><td>Day 4</td><td>午饭</td><td>木屋町周边随意</td><td>神宮丸太町駅</td><td></td></tr>
-        <tr><td>Day 4</td><td>下午茶</td><td>一保堂茶舗 京都本店</td><td>寺町通</td><td>300年老字号，配点心喝茶</td></tr>
-        <tr><td>Day 4</td><td>晚饭</td><td>祇园随意</td><td>祇园</td><td></td></tr>
-        <tr><td>Day 5</td><td>午饭</td><td>清滝附近随意</td><td>清滝附近</td><td>看徒步进度灵活安排</td></tr>
-        <tr><td>Day 4</td><td>下午茶</td><td>八十八 良葉舎 嵐山</td><td>岚山</td><td>抹茶团子</td></tr>
-        <tr><td>Day 5</td><td>晚饭</td><td>祇园随意</td><td>祇园</td><td></td></tr>
-        <tr><td>Day 3</td><td>午饭</td><td>宇治随意</td><td>宇治平等院周边</td><td></td></tr>
-        <tr><td>Day 6</td><td>下午茶</td><td>中村藤吉 平等院店</td><td>宇治平等院周边</td><td>自助点单，不用等位，本店要排队</td></tr>
-        <tr><td>Day 6</td><td>晚饭</td><td>奈良釜饭</td><td>近铁奈良站</td><td></td></tr>
-        <tr><td>Day 7</td><td>午饭</td><td>奈良公园周边随意</td><td>奈良公园</td><td></td></tr>
-        <tr><td>Day 7</td><td>晚饭</td><td>大阪酒店附近随意</td><td>心斋桥</td><td></td></tr>
-        <tr><td>Day 8</td><td>早饭</td><td>堂島ロール Mon cher</td><td>阪急梅田店</td><td>到梅田先吃，当场吃，不带走</td></tr>
-        <tr><td>Day 8</td><td>午饭</td><td>神戸牛ステーキ 村かみ グランフロント大阪店</td><td>梅田</td><td>提前预约</td></tr>
+        <tr><td>D1</td><td>晚饭</td><td></td><td>祇园随意</td><td>祇园</td><td></td></tr>
+        <tr><td>D2</td><td>早点</td><td>抹茶</td><td>菊乃井 無碍山房</td><td>祇园</td><td>抹茶芭菲</td></tr>
+        <tr><td>D2</td><td>午饭</td><td>豆腐宴</td><td>南禅寺 順正</td><td>祇园</td><td></td></tr>
+        <tr><td>D2</td><td>下午茶</td><td>抹茶</td><td>吉祥菓寮抹茶芭菲</td><td>东山石桥町</td><td></td></tr>
+        <tr><td>D2</td><td>晚饭</td><td></td><td>祇园随意</td><td>祇园</td><td></td></tr>
+        <tr><td>D3</td><td>午饭</td><td></td><td>修学院周边随意</td><td>修学院駅</td><td></td></tr>
+        <tr><td>D3</td><td>下午茶</td><td>抹茶</td><td>ぎをん小森</td><td>祇园白川</td><td>抹茶わらび饼</td></tr>
+        <tr><td>D3</td><td>晚饭</td><td></td><td>锦市场随意</td><td>锦市场</td><td>市场内小店，边逛边吃</td></tr>
+        <tr><td>D4</td><td>午饭</td><td></td><td>木屋町周边随意</td><td>神宮丸太町駅</td><td></td></tr>
+        <tr><td>D4</td><td>下午茶</td><td>抹茶</td><td>一保堂茶舗 京都本店</td><td>寺町通</td><td>老字号，配点心喝茶</td></tr>
+        <tr><td>D4</td><td>晚饭</td><td></td><td>祇园随意</td><td>祇园</td><td></td></tr>
+        <tr><td>D5</td><td>午饭</td><td></td><td>清滝附近随意</td><td>清滝附近</td><td>看徒步进度灵活安排</td></tr>
+        <tr><td>D4</td><td>下午茶</td><td>抹茶</td><td>八十八良葉舎 嵐山</td><td>岚山</td><td>抹茶团子</td></tr>
+        <tr><td>D5</td><td>晚饭</td><td></td><td>祇园随意</td><td>祇园</td><td></td></tr>
+        <tr><td>D6</td><td>早饭</td><td>栗子蒙布朗</td><td>和栗専門 紗織</td><td>祇园</td><td></td></tr>
+        <tr><td>D6</td><td>午饭</td><td></td><td>宇治随意</td><td>宇治平等院周边</td><td></td></tr>
+        <tr><td>D6</td><td>下午茶</td><td></td><td>中村藤吉 平等院店</td><td>宇治平等院周边</td><td>自助点单，不用等位，本店要排队</td></tr>
+        <tr><td>D6</td><td>晚饭</td><td>奈良釜饭</td><td>奈良站随意</td><td>近铁奈良站</td><td></td></tr>
+        <tr><td>D7</td><td>午饭</td><td></td><td>奈良公园周边随意</td><td>奈良公园</td><td></td></tr>
+        <tr><td>D7</td><td>晚饭</td><td></td><td>大阪酒店附近随意</td><td>心斋桥</td><td></td></tr>
+        <tr><td>D8</td><td>早饭</td><td>蛋糕</td><td>堂島ロール Mon cher</td><td>阪急梅田店</td><td>到梅田当场吃，不带走</td></tr>
+        <tr><td>D8</td><td>午饭</td><td>和牛烤肉</td><td>神戸牛ステーキ 村かみ グランフロント大阪店</td><td>梅田</td><td>提前预约</td></tr>
       </tbody>
     </table></div>
+    <div class="note">以上标注"随意"的几餐，可从以下菜系里挑：✔️和牛烤肉、烧鸟、鳗鱼饭、寿喜烧、天妇罗、乌冬面、荞麦面（抹茶）、✔️豆腐宴、✔️奈良釜饭、大阪烧、关东煮、可乐饼、章鱼烧；甜品：✔️栗子蒙布朗、和果子、水果三明治，✔️抹茶甜品。</div>
   </div>
 
   <!-- TRANSPORT SUMMARY -->
@@ -766,17 +792,18 @@
         <tr><td>福寿園 京都本店</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
         <tr><td>甘味どころ ぎをん小森</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
         <tr><td>吉祥菓寮 祇園本店</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
+        <tr><td>菊乃井 無碍山房</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
         <tr><td>茶之菓 マールブランシュ 清水坂店</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
         <tr><td>八十八良葉舎 清水</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
         <tr><td>GOKAGO</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
-        <tr><td>菊乃井 無碍山房</td><td>祇园四条周围</td><td>京都</td><td></td></tr>
         <tr><td>一保堂茶舗 京都本店</td><td>仙洞御所附近</td><td>京都</td><td></td></tr>
         <tr><td>八十八良葉舎 嵐山</td><td>岚山</td><td>京都</td><td></td></tr>
+        <tr><td>福寿園 嵐山茶屋</td><td>岚山</td><td>京都</td><td></td></tr>
         <tr><td>稲荷茶寮</td><td>伏见稻荷</td><td>京都</td><td></td></tr>
         <tr><td>辻利 宇治本店</td><td>平等院周围</td><td>宇治</td><td></td></tr>
         <tr><td>伊藤久右衛門 宇治本店</td><td>平等院周围</td><td>宇治</td><td></td></tr>
         <tr><td>中村藤吉 本店</td><td>平等院周围</td><td>宇治</td><td></td></tr>
-        <tr><td>通圓本店</td><td>平等院周围</td><td>宇治</td><td></td></tr>
+        <tr><td>通圓本店</td><td>平等院周围</td><td>宇治</td><td></tr>
         <tr><td>三星園 上林三入本店</td><td>平等院周围</td><td>宇治</td><td></td></tr>
         <tr><td>福寿園 宇治茶工房</td><td>平等院周围</td><td>宇治</td><td></td></tr>
       </tbody>
