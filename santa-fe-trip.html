@@ -1,0 +1,477 @@
+<title>Santa Fe & Northern New Mexico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout concept: a travel-document page — a boarding-pass header strip
+     (mono, ticket-stub styling) leads into a vertical day-by-day timeline
+     with a turquoise route line, closing in a tear-off style checklist. */
+  :root {
+    --bg: #eef1f0;
+    --surface: #ffffff;
+    --ink: #1c2523;
+    --muted: #5c6866;
+    --line: #d7ddda;
+    --accent: #1f7a72;
+    --accent-ink: #0d3d38;
+    --flag: #b5551f;
+    --flag-bg: #f7e9dd;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12181a;
+      --surface: #1a2225;
+      --ink: #e9efec;
+      --muted: #9caaa6;
+      --line: #2c3639;
+      --accent: #4fb3a9;
+      --accent-ink: #bfe8e2;
+      --flag: #e0996a;
+      --flag-bg: #2e2419;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12181a;
+    --surface: #1a2225;
+    --ink: #e9efec;
+    --muted: #9caaa6;
+    --line: #2c3639;
+    --accent: #4fb3a9;
+    --accent-ink: #bfe8e2;
+    --flag: #e0996a;
+    --flag-bg: #2e2419;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Libre Franklin', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding-inline: 20px;
+    padding-block: 28px 60px;
+    line-height: 1.5;
+  }
+  .page {
+    max-width: 720px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; text-wrap: balance; margin: 0; }
+
+  /* ---------- Header / boarding-pass strip ---------- */
+  header.ticket {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .ticket-top {
+    padding: 22px 24px 18px;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: 6px;
+  }
+  .stub-divider {
+    position: relative;
+    height: 0;
+    border-top: 1.5px dashed var(--line);
+    margin: 0 0;
+  }
+  .stub-divider::before, .stub-divider::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg);
+  }
+  .stub-divider::before { left: -30px; }
+  .stub-divider::after { right: -30px; }
+  .flights {
+    display: flex;
+    gap: 16px;
+    padding: 18px 24px 22px;
+    font-family: 'IBM Plex Mono', monospace;
+    flex-wrap: wrap;
+  }
+  .flight {
+    flex: 1 1 260px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .flight .route {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .flight .route .arrow { color: var(--accent); margin: 0 4px; }
+  .flight .meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ---------- Quick facts ---------- */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .fact {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-width: 0;
+  }
+  .fact .label {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .fact .value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  @media (max-width: 480px) {
+    .facts { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Timeline ---------- */
+  .flex-note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+  }
+  .flex-note strong { color: var(--ink); }
+
+  .timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-left: 28px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: var(--line);
+  }
+  .day {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px 18px;
+  }
+  .day::before {
+    content: "";
+    position: absolute;
+    left: -28px;
+    top: 22px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+  .day-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .day-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-ink);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .day h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 2px 9px;
+    white-space: nowrap;
+  }
+  .day ul {
+    margin: 0;
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .day li { padding-left: 2px; }
+  .day li a { color: var(--accent-ink); text-decoration-color: var(--accent); text-underline-offset: 2px; }
+  .day li a:hover { text-decoration-thickness: 2px; }
+  .day li.flag {
+    color: var(--ink);
+    background: var(--flag-bg);
+    list-style: none;
+    margin-left: -1.1em;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border-left: 3px solid var(--flag);
+    font-weight: 500;
+  }
+
+  /* ---------- Checklist ---------- */
+  .checklist-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px 20px;
+  }
+  .checklist-card h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .checklist-card .subtitle { margin-top: 0; margin-bottom: 14px; }
+  .check-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 4px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .check-item span { min-width: 0; font-size: 0.94rem; }
+  .check-item.done span { color: var(--muted); text-decoration: line-through; }
+
+  .note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 2px 4px;
+  }
+  .note strong { color: var(--ink); }
+
+  footer {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+</style>
+
+<div class="page">
+
+  <header class="ticket">
+    <div class="ticket-top">
+      <div class="eyebrow">Trip Itinerary</div>
+      <h1>Santa Fe &amp; Northern New Mexico</h1>
+      <p class="subtitle">Friday, November 20 &ndash; Wednesday, November 25, 2026 &middot; 5 nights</p>
+    </div>
+    <div class="stub-divider"></div>
+    <div class="flights">
+      <div class="flight">
+        <div class="route">SFO<span class="arrow">&rarr;</span>ABQ</div>
+        <div class="meta">Fri 11/20<br>Arrive 3:00 PM</div>
+      </div>
+      <div class="flight">
+        <div class="route">ABQ<span class="arrow">&rarr;</span>SFO</div>
+        <div class="meta">Wed 11/25<br>Depart 7:19 PM</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="facts">
+    <div class="fact"><div class="label">Base</div><div class="value">Santa Fe</div></div>
+    <div class="fact"><div class="label">Getting around</div><div class="value">Rental car</div></div>
+    <div class="fact"><div class="label">ABQ &rarr; Santa Fe</div><div class="value">~1 hr</div></div>
+  </div>
+
+  <p class="flex-note"><strong>The middle four days swap freely.</strong> Santa Fe, Los Alamos + Bandelier, Abiquiú, and Taos don't depend on each other &mdash; book the O'Keeffe Home &amp; Studio tour first for whichever day has a slot (Mon or Tue), then arrange the rest around it. Reorder if anything's closed that day.</p>
+
+  <div class="timeline">
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-date">FRI&nbsp;11/20</span>
+        <h3>Arrive</h3>
+      </div>
+      <ul>
+        <li>Land ABQ 3:00 PM, pick up rental car, drive to Santa Fe (~1 hr)</li>
+        <li>Check in, evening on the Plaza, dinner</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-date">SAT&nbsp;11/21</span>
+        <h3>Santa Fe</h3>
+        <span class="tag">flexible</span>
+      </div>
+      <ul>
+        <li>Georgia O'Keeffe Museum (downtown)</li>
+        <li>Canyon Road galleries</li>
+        <li>Palace of the Governors, Cathedral Basilica</li>
+        <li>Loretto Chapel &mdash; the "miraculous staircase"</li>
+        <li>Inn &amp; Spa at Loretto &mdash; stop for photos, next door to the chapel</li>
+        <li>Cross of the Martyrs at sunset</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-date">SUN&nbsp;11/22</span>
+        <h3>Los Alamos + Bandelier</h3>
+        <span class="tag">flexible</span>
+      </div>
+      <ul>
+        <li>Bradbury Science Museum &mdash; Manhattan Project history, free</li>
+        <li>Fuller Lodge / Los Alamos History Museum, Oppenheimer's house (exterior only)</li>
+        <li>Bandelier National Monument (~15 min away) &mdash; Main Loop Trail, Alcove House ladder climb if time allows</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-date">MON&nbsp;11/23</span>
+        <h3>Abiquiú</h3>
+        <span class="tag">flexible &middot; or Tue</span>
+      </div>
+      <ul>
+        <li class="flag">O'Keeffe Home &amp; Studio guided tour &mdash; book in advance, reservations essentially mandatory</li>
+        <li>Ghost Ranch, Rio Chama valley views</li>
+        <li>Bode's General Store</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-date">TUE&nbsp;11/24</span>
+        <h3>Taos</h3>
+        <span class="tag">flexible &middot; or Mon</span>
+      </div>
+      <ul>
+        <li>Via the High Road &mdash; depart Santa Fe ~8:00 AM &middot; Chimayó: El Santuario, weaving shops</li>
+        <li>Las Trampas, Truchas &mdash; mountain villages, views</li>
+        <li>Taos Plaza, then Taos Pueblo &mdash; no reservation needed, $25/adult at the gate; call ahead to confirm no ceremonial closure</li>
+        <li>St. Francis of Assisi Mission Church</li>
+        <li>Millicent Rogers Museum</li>
+        <li>Rio Grande Gorge Bridge</li>
+        <li>Taos Pueblo &mdash; no reservation needed, $25/adult at the gate; call ahead to confirm no ceremonial closure</li>
+        <li>Return via the Low Road, following the Rio Grande (~1.5 hrs)</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-date">WED&nbsp;11/25</span>
+        <h3>Albuquerque &amp; fly home</h3>
+      </div>
+      <ul>
+        <li>Check out, drive to ABQ (~1 hr)</li>
+        <li>Breaking Bad spots: Walter White's house (private home &mdash; view respectfully from outside), Twisters/Los Pollos Hermanos, the Dog House, A1 Car Wash</li>
+        <li>Old Town Albuquerque, Sandia Peak Tramway if time allows</li>
+        <li>Return rental car, depart ABQ 7:19 PM</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="checklist-card">
+    <h2>Booking Checklist</h2>
+    <p class="subtitle">Tap to check off &mdash; saved on this device</p>
+    <ul class="check-list" id="checklist">
+      <li class="check-item"><input type="checkbox" id="c1"><span>Flights: SFO&rarr;ABQ 11/20 (3:00 PM arrival), ABQ&rarr;SFO 11/25 (7:19 PM departure)</span></li>
+      <li class="check-item"><input type="checkbox" id="c2"><span>Rental car</span></li>
+      <li class="check-item"><input type="checkbox" id="c3"><span>O'Keeffe Home &amp; Studio tour &mdash; Abiquiú, Mon or Tue (book ASAP; confirm exact 2026 season-end date on okeeffemuseum.org)</span></li>
+      <li class="check-item"><input type="checkbox" id="c4"><span>Santa Fe lodging, 5 nights (11/20&ndash;11/25)</span></li>
+      <li class="check-item"><input type="checkbox" id="c5"><span>O'Keeffe Museum Santa Fe &mdash; advance tickets recommended</span></li>
+    </ul>
+  </div>
+
+  <footer>Santa Fe &middot; Nov 2026</footer>
+
+</div>
+
+<script>
+  (function () {
+    var items = document.querySelectorAll('.check-item');
+    items.forEach(function (item) {
+      var box = item.querySelector('input');
+      var key = 'sftrip-' + box.id;
+      try {
+        if (localStorage.getItem(key) === '1') {
+          box.checked = true;
+          item.classList.add('done');
+        }
+      } catch (e) {}
+      item.addEventListener('click', function (e) {
+        if (e.target !== box) {
+          box.checked = !box.checked;
+        }
+        item.classList.toggle('done', box.checked);
+        try { localStorage.setItem(key, box.checked ? '1' : '0'); } catch (e) {}
+      });
+    });
+  })();
+</script>
