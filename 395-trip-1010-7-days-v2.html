@@ -1,0 +1,523 @@
+<title>395 Fall Color Trip (Oct 10 v2)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root{
+    --bg:#f1efe8;
+    --surface:#ffffff;
+    --surface-2:#e9e6dc;
+    --text:#2a2823;
+    --text-muted:#726f64;
+    --accent:#b9791a;
+    --accent-soft:#f1decb;
+    --accent2:#3d5c53;
+    --accent2-soft:#e2ebe6;
+    --line:#dcd7c9;
+    --shadow: 0 1px 2px rgba(40,36,20,0.06), 0 4px 14px rgba(40,36,20,0.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1a1916;
+      --surface:#232219;
+      --surface-2:#2b2a20;
+      --text:#efece2;
+      --text-muted:#a6a196;
+      --accent:#e0a53f;
+      --accent-soft:#3a2f1c;
+      --accent2:#7ab7a4;
+      --accent2-soft:#22312c;
+      --line:#3a382d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 20px rgba(0,0,0,0.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1a1916;
+    --surface:#232219;
+    --surface-2:#2b2a20;
+    --text:#efece2;
+    --text-muted:#a6a196;
+    --accent:#e0a53f;
+    --accent-soft:#3a2f1c;
+    --accent2:#7ab7a4;
+    --accent2-soft:#22312c;
+    --line:#3a382d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 20px rgba(0,0,0,0.35);
+    color-scheme: dark;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', 'Segoe UI', sans-serif;
+    padding-inline:20px;
+    padding-block:36px 56px;
+  }
+  .wrap{ max-width:760px; margin:0 auto; }
+
+  header.top{
+    margin-bottom:28px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(30px, 6vw, 42px);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    margin:0 0 14px;
+    text-wrap:balance;
+  }
+  .route-line{
+    font-size:15.5px;
+    color:var(--text-muted);
+    line-height:1.6;
+    margin:0 0 16px;
+  }
+  .route-line b{ color:var(--text); font-weight:600; }
+
+  .info-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:14px;
+  }
+  .chip{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--text-muted);
+    box-shadow:var(--shadow);
+    flex:1 1 220px;
+  }
+  .chip .dot{
+    flex:0 0 auto;
+    width:8px; height:8px;
+    border-radius:50%;
+    margin-top:5px;
+    background:var(--accent);
+  }
+  .chip.spring .dot{ background:var(--accent2); }
+  .chip b{ color:var(--text); font-weight:600; }
+
+  .link-box{
+    border:1.5px solid var(--accent2);
+    border-radius:12px;
+    background:var(--accent2-soft);
+    padding:14px 16px;
+    margin-top:14px;
+  }
+  .link-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent2);
+    margin:0 0 10px;
+  }
+  .link-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .link-btn{
+    display:inline-flex;
+    align-items:center;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+    background:var(--surface);
+    border:1.5px solid var(--accent2);
+    border-radius:8px;
+    padding:8px 14px;
+    text-decoration:none;
+    transition:background .15s ease, color .15s ease;
+  }
+  .link-btn:hover{
+    background:var(--accent2);
+    color:var(--surface);
+  }
+
+  .spine{
+    position:relative;
+    margin-top:34px;
+    padding-left:34px;
+  }
+  .spine::before{
+    content:"";
+    position:absolute;
+    left:9px; top:6px; bottom:6px;
+    width:2px;
+    background:linear-gradient(to bottom, var(--accent), var(--accent2));
+    opacity:.5;
+  }
+
+  .day{
+    position:relative;
+    margin-bottom:26px;
+  }
+  .day:last-child{ margin-bottom:0; }
+  .day::before{
+    content:"";
+    position:absolute;
+    left:-34px; top:4px;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--surface);
+    border:2px solid var(--accent);
+  }
+  .day.rest-day::before{ border-color:var(--accent2); }
+
+  .day-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .day-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    letter-spacing:.08em;
+  }
+  .day-date{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:21px;
+  }
+  .day-title{
+    font-size:15px;
+    color:var(--text-muted);
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:14px 16px;
+  }
+  ul.stops{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  ul.stops li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:15.5px;
+    line-height:1.55;
+  }
+  ul.stops li + li{
+    padding-top:9px;
+    border-top:1px dashed var(--line);
+  }
+  ul.stops li.optional{ opacity:.85; }
+  .icon{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14.5px;
+    background:var(--accent-soft);
+    margin-top:1px;
+  }
+  .icon.spring{ background:var(--accent2-soft); }
+  .icon.stay{ background:var(--surface-2); }
+  .stop-body b{ font-weight:600; }
+  .tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent2);
+    background:var(--accent2-soft);
+    border-radius:5px;
+    padding:1px 6px;
+    margin-right:6px;
+    vertical-align:1px;
+  }
+  .stop-note{
+    display:block;
+    color:var(--text-muted);
+    font-size:14px;
+    margin-top:2px;
+  }
+  .mi{
+    font-family:'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size:13.5px;
+    color:var(--accent2);
+    font-weight:600;
+  }
+  .mi::before{ content:"("; }
+  .mi::after{ content:")"; }
+  .or-divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:2px 0;
+    color:var(--text-muted);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+  .or-divider::before, .or-divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .choice-box{
+    border:1.5px solid var(--accent2);
+    border-radius:12px;
+    padding:16px;
+    margin-block:20px;
+    background:var(--accent2-soft);
+  }
+  .choice-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--accent2);
+    margin:0 0 12px;
+  }
+  .choice-box ul.stops{
+    gap:14px;
+  }
+  .choice-box ul.stops li + li{
+    padding-top:14px;
+  }
+  .choice-box ul.stops + .route-label{
+    margin-top:18px;
+  }
+  .route-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin:0 0 10px;
+  }
+  .stay-line{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    font-size:15px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  .stay-line b{ color:var(--text); }
+
+  footer{
+    margin-top:34px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+    font-size:13.5px;
+    color:var(--text-muted);
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  footer span{ display:flex; align-items:center; gap:6px; }
+
+  @media (max-width:480px){
+    .spine{ padding-left:28px; }
+    .day::before{ left:-28px; width:16px; height:16px; }
+    .spine::before{ left:7px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow">Eastern Sierra · US-395</p>
+    <h1>Fall Color Trip</h1>
+    <p class="route-line">
+      <b>San Jose</b> → <b>Bishop</b> → <b>Mammoth Lakes</b> → <b>Lee Vining</b> → <b>Mammoth Lakes</b> → <b>San Jose</b>
+    </p>
+
+    <div class="info-row">
+      <div class="chip">
+        <span class="dot"></span>
+        <span><b>Oct 10 – Oct 16, 2026</b> · 7 days, 6 nights</span>
+      </div>
+    </div>
+    <div class="link-box">
+      <p class="link-label">Tracking the fall colors in CA-395</p>
+      <div class="link-buttons">
+        <a class="link-btn" href="https://californiafallcolor.com/" target="_blank" rel="noopener">californiafallcolor.com ↗</a>
+        <a class="link-btn" href="https://www.monocounty.org/things-to-do/fall-colors/" target="_blank" rel="noopener">monocounty.org/fall-colors ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="spine">
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 1</span>
+        <span class="day-date">Sat, Oct 10</span>
+        <span class="day-title">San Jose → Bishop</span>
+      </div>
+      <div class="card">
+        <ul class="stops">
+          <li><span class="icon">🚗</span><span class="stop-body"><b>Drive:</b> San Jose → Bishop <span class="stop-note">~6.5 hrs — start early, arrive early afternoon</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">Sonora Pass <span class="stop-note">Photo stop along the way</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">South Lake <span class="stop-note">Dirt roads or the first half-mile of trail into the aspens</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">North Lake (Bishop Creek Canyon) <span class="stop-note">Best color in the canyon</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">Lake Sabrina <span class="stop-note">Same canyon as North/South Lake — often the best reflections of the three</span></span></li>
+        </ul>
+      </div>
+      <div class="stay-line">🏨 Overnight: <b>Bishop</b> — night 1 of 1</div>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 2</span>
+        <span class="day-date">Sun, Oct 11</span>
+        <span class="day-title">Little Lakes Valley · Rock Creek → Mammoth Lakes</span>
+      </div>
+      <div class="card">
+        <ul class="stops">
+          <li><span class="icon">🥾</span><span class="stop-body">Little Lakes Valley to Gem Lakes <span class="mi">7.3 mi · 1,066 ft</span><span class="stop-note">Rock Creek Road to Mosquito Flat</span></span></li>
+          <li><span class="icon">🥾</span><span class="stop-body">Rock Creek Lake Loop <span class="mi">1.5 mi · 68 ft</span></span></li>
+          <li><span class="icon">🚗</span><span class="stop-body"><b>Drive:</b> Rock Creek → Mammoth Lakes <span class="stop-note">Evening</span></span></li>
+        </ul>
+      </div>
+      <div class="stay-line">🏨 Overnight: <b>Mammoth Lakes</b> — night 1 of 1</div>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 3</span>
+        <span class="day-date">Mon, Oct 12</span>
+        <span class="day-title">Virginia Lakes · Conway Summit · Lundy Canyon</span>
+      </div>
+      <div class="card">
+        <ul class="stops">
+          <li><span class="icon">🚗</span><span class="stop-body"><b>Drive:</b> Mammoth Lakes → Bridgeport <span class="stop-note">Morning</span></span></li>
+          <li><span class="icon">🥾</span><span class="stop-body">Big Virginia Lake to Frog Lakes Trail (Green Creek area) <span class="mi">3.4 mi · 554 ft</span><span class="stop-note">Last 0.5 mi is one-lane gravel</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">Conway Summit <span class="stop-note">8,138 ft overlook, quick pullout</span></span></li>
+          <li><span class="icon">🥾</span><span class="stop-body">Lundy Canyon Trail <span class="stop-note">0.5 mi at the trailhead, or further into the grove</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">Lundy Lake <span class="stop-note">Tucked into a large aspen grove</span></span></li>
+        </ul>
+      </div>
+      <div class="stay-line">🏨 Overnight: <b>Lee Vining</b> — night 1 of 2</div>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 4</span>
+        <span class="day-date">Tue, Oct 13</span>
+        <span class="day-title">Twenty Lakes Basin · Mono Lake</span>
+      </div>
+      <div class="card">
+        <ul class="stops">
+          <li><span class="icon spring">♨️</span><span class="stop-body"><b>Travertine Hot Springs</b> — sunrise soak <span class="stop-note">Just outside Bridgeport. Sunrise ~7:02 AM. Jack Sawyer Rd is a rough dirt road, ~1 mi. ~300 yd flat walk from parking to the pools; test temps before soaking, they vary.</span></span></li>
+          <li><span class="icon">🥾</span><span class="stop-body">Twenty Lakes Basin / Saddlebag Lake Loop <span class="mi">8 mi · 915 ft</span><span class="stop-note">Full day — the longest hike of the trip</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">Mono Lake South Tufa — sunset <span class="stop-note">Close to Lee Vining — tufa towers, one of the most distinctive photo subjects on the corridor</span></span></li>
+        </ul>
+      </div>
+      <div class="stay-line">🏨 Overnight: <b>Lee Vining</b> — night 2 of 2</div>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 5</span>
+        <span class="day-date">Wed, Oct 14</span>
+        <span class="day-title">McGee Creek · Convict Lake · Hot Creek</span>
+      </div>
+      <div class="card">
+        <ul class="stops">
+          <li><span class="icon">🥾</span><span class="stop-body">McGee Creek to Horsetail Creek Trail <span class="mi">3.6 mi · 705 ft</span></span></li>
+          <li><span class="icon">🥾</span><span class="stop-body">Convict Lake Loop Trail <span class="mi">2.5 mi · 173 ft</span><span class="stop-note">Color along looker's-left of the lake and the back boardwalk</span></span></li>
+          <li class="optional"><span class="icon">🚤</span><span class="stop-body"><span class="tag">Optional</span>Convict Lake Boat Rental <span class="stop-note">Convict Lake Resort Marina</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">Hot Creek Geologic Site <span class="stop-note">Viewing only — no swimming allowed</span></span></li>
+          <li class="optional"><span class="icon">🥾</span><span class="stop-body"><span class="tag">Optional</span>Mammoth Lakes Basin Loop <span class="mi">5.4 mi · 570 ft</span><span class="stop-note">Past Lake Mary, Lake Mamie, Lake George, and Horseshoe Lake</span></span></li>
+        </ul>
+      </div>
+      <div class="stay-line">🏨 Overnight: <b>Mammoth Lakes</b> — night 1 of 2</div>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 6</span>
+        <span class="day-date">Thu, Oct 15</span>
+        <span class="day-title">Parker Lake · June Lake Loop</span>
+      </div>
+      <div class="card">
+        <ul class="stops">
+          <li><span class="icon">🥾</span><span class="stop-body">Parker Lake Trail <span class="mi">3.6 mi · 643 ft</span></span></li>
+          <li><span class="icon">📷</span><span class="stop-body">June Lake Loop Drive (Silver Lake) <span class="stop-note">16 mi loop — linger at Silver Lake</span></span></li>
+          <li class="optional"><span class="icon">🥾</span><span class="stop-body"><span class="tag">Optional</span>Fern Lake Trail <span class="mi">3.3 mi · 1,555 ft</span><span class="stop-note">Steep throughout; good aspen color + waterfall, but a rough add after Parker Lake and at altitude</span></span></li>
+        </ul>
+      </div>
+      <div class="stay-line">🏨 Overnight: <b>Mammoth Lakes</b> — night 2 of 2</div>
+    </div>
+
+    <div class="day">
+      <div class="day-head">
+        <span class="day-num">DAY 7</span>
+        <span class="day-date">Fri, Oct 16</span>
+        <span class="day-title">Morning options → Home</span>
+      </div>
+      <div class="card">
+        <div class="choice-box">
+          <p class="choice-label">Choose a route — depends on where the color is best</p>
+          <p class="route-label">Route 1 — Bridgeport</p>
+          <ul class="stops">
+            <li><span class="icon">🚤</span><span class="stop-body"><span class="tag">Option 1</span>Twin Lakes boat rental <span class="stop-note">Rent from Annett's Mono Village</span></span></li>
+            <li><span class="icon">🥾</span><span class="stop-body"><span class="tag">Option 2</span>Green Lake via Green Creek Trail <span class="mi">6.4 mi · 1,105 ft</span></span></li>
+            <li class="optional"><span class="icon spring">♨️</span><span class="stop-body"><span class="tag">Option 3</span>Buckeye Hot Springs <span class="stop-note">Off 395, Buckeye Rd is a dirt road for ~3.5 mi, then a short steep descent to the creek. Upper pools near parking, main pools further down (~135°F, cooler pools downstream).</span></span></li>
+          </ul>
+          <p class="route-label">Route 2 — Mammoth Lakes</p>
+          <ul class="stops">
+            <li><span class="icon">🚤</span><span class="stop-body"><span class="tag">Option 1</span>Lake Mary boat rental <span class="stop-note">Rent at Lake Mary Marina</span></span></li>
+            <li><span class="icon">🥾</span><span class="stop-body"><span class="tag">Option 2</span>Duck Pass Trail to Barney Lake <span class="mi">5 mi · 900 ft</span><span class="stop-note">Passes Skeleton Lake at ~1.5 mi</span></span></li>
+          </ul>
+        </div>
+        <ul class="stops">
+          <li><span class="icon">🚗</span><span class="stop-body"><b>Drive:</b> Mammoth Lakes → San Jose <span class="stop-note">~5.5 hrs — via CA-108, arrive Jamestown before sunset, continue home in the evening</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>🥾 Hike</span>
+    <span>📷 Photography stop</span>
+    <span>♨️ Hot spring</span>
+    <span>🚤 Boating</span>
+    <span>🏨 Overnight</span>
+  </footer>
+
+</div>
